@@ -1,1 +1,6 @@
+void display_prompt();
 
+int main(){
+
+
+}
