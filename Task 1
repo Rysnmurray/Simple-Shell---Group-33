@@ -1,6 +1,18 @@
+#include <stdio.h>
+
 void display_prompt();
 
 int main(){
+
+//prompting user and storing input 
+char input[1];
+
+printf("please enter an input: ");
+
+//storing received user input into variable
+scanf("%s", input);
+
+
 
 
 }
