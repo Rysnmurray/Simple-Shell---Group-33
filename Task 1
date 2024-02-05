@@ -1,18 +1,23 @@
 #include <stdio.h>
+#include <string.h>
 
 void display_prompt();
 
 int main(){
 
 //prompting user and storing input 
-char input[1];
+char input[512];
 
 printf("please enter an input: ");
+fgets(input, 512, stdin);
+  input[strcspn(input, "\n")] = 0;
+    
+    // Parsing the input, for example, splitting it by spaces
+    char *token = strtok(input, " \t|><&;");
+    while (token != NULL) {
+        printf("%s\n", token);
+        token = strtok(NULL, " \t|><&;");
 
-//storing received user input into variable
-scanf("%s", input);
-
-
-
-
+}
+return 0;
 }
