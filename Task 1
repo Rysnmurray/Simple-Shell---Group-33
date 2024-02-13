@@ -1,8 +1,15 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include <unistd.h>
+#include <sys/wait.h>
 
-void display_prompt();
+#define MAX_INPUT_LENGTH 512
+#define MAX_TOKENS 50
+
+void display_prompt(){
+printf("shell>>");
+};
 
 int executeExternalCommand(char **tokens) {
     pid_t pid = fork();
