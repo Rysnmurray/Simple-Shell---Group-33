@@ -1,7 +1,44 @@
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
 
 void display_prompt();
+
+int executeExternalCommand(char **tokens) {
+    pid_t pid = fork();
+ 
+    if (pid < 0) {
+        perror("Failed to create child process");
+    } else if (pid == 0) {
+        // Child process
+        if (execvp(tokens[0], tokens) == -1) {
+            perror("Failed to execute command");
+            exit(EXIT_FAILURE);
+        }
+    } else {
+        // Parent process
+        wait(NULL); // Wait for the child process to complete
+    }
+ 
+    return 1; // Indicate that the command was executed
+}
+ 
+void saveOriginalPath() {
+    strcpy(originalPath, getenv("PATH"));
+}
+ 
+void restoreOriginalPath() {
+    if (setenv("PATH", originalPath, 1) != 0) {
+        perror("Failed to restore original PATH");
+    }
+    printf("Restored PATH: %s\n", originalPath);
+}
+ 
+void saveCurrentPath() {
+    if (getcwd(currentPath, sizeof(currentPath)) == NULL) {
+        perror("Failed to get current working directory");
+    }
+}
 
 int main(){
 
