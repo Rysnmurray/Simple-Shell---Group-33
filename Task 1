@@ -7,6 +7,10 @@
 #define MAX_INPUT_LENGTH 512
 #define MAX_TOKENS 50
 
+char currentPath[50];
+char originalPath[50];
+
+
 void display_prompt(){
 printf("shell>>");
 };
@@ -49,13 +53,13 @@ void saveCurrentPath() {
 
 int main(){
 
-//prompting user and storing input 
+//prompting user and storing input
 char input[512];
 
-printf("please enter an input: ");
+printf("$> ");
 fgets(input, 512, stdin);
   input[strcspn(input, "\n")] = 0;
-    
+   
     // Parsing the input, for example, splitting it by spaces
     char *token = strtok(input, " \t|><&;");
     while (token != NULL) {
@@ -65,3 +69,4 @@ fgets(input, 512, stdin);
 }
 return 0;
 }
+
