@@ -1,0 +1,57 @@
+place in header:
+
+#include <stdio.h>
+#include <string.h>
+#include <unistd.h>
+#include <sys/types.h>
+
+1. Understand the fork() and exec() functions: You need to understand how fork() creates a new process, and exec() replaces the current process with a new one.
+   the fork below is an example of inputting "ls" and outputting the files in the directory:
+   
+pid_t pid;
+
+pid = fork()
+
+if (pid<0){
+fprintf(stderr , "fork failed");
+return 1;
+}
+else if (pid == 0){
+execlp("/bin/ls","ls",NULL);
+}
+else{
+wait(NULL);
+printf("child complete");
+}
+return 0
+
+2.Handling environment variables: Specifically, you need to focus on the PATH environment variable, which dictates where the shell searches for external executable programs.
+
+PATH variable is a list of directories seperated by colons, used to find executable files that can be run by the user. User inputs the file name to be executed.
+
+3.Choosing the appropriate exec() variant: You need to select the exec() variant that takes into account the PATH environment parameter. Additionally, you must handle any number of command parameters.
+
+this is seen within the fork function , using execlp
+
+4.Error handling: Ensure that your program handles situations where an invalid program is entered, and provide appropriate error messages to the user.
+
+5.Parsing simplification: To make parsing easier and support built-in commands, you should generate a single string array containing all the tokens of the user input line.
+where max tokens = 50 
+ int i = 0;
+    while (token != NULL && i < MAX_TOKENS) {
+        tokens[i] = strdup(token);
+        token = strtok(NULL, " \n");
+        i++;
+    }
+    return tokens[0];
+
+6.Regression testing: Verify that the changes you make do not break the previously working code. Re-run tests from previous stages to ensure everything still functions correctly.
+
+7.Testing the new functionality: Test the ability of your shell to execute external programs, including those with various parameters and flags. A recommended program to test with is 'ls', which lists the contents of a directory.
+
+8.Testing path handling: Ensure that your shell correctly handles paths and only looks for executables in directories specified by the PATH environment variable.
+
+9.Testing for invalid input: Check how your shell handles cases where the user provides an invalid program.
+
+
+
