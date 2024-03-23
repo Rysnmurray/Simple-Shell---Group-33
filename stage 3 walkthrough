@@ -1,0 +1,136 @@
+NOTE THAT VARIABLES IN CODE WILL NEED DECLARED AND DEFINED IN THE MAIN FUNCTION 
+
+1.Accessing the program environment:
+
+Use the getenv() function to access the environment variables HOME and PATH.
+Use the setenv() function to change the environment if needed.
+Restore the PATH variable to its original value on exiting the shell.
+
+  // Use getenv() to get the current value of the HOME and PATH environment variables
+  char *home = getenv("HOME");
+  char *path = getenv("PATH");
+
+  printf("Original HOME: %s\n", home);
+  printf("Original PATH: %s\n", path);
+
+  // Use setenv() to change the value of the HOME environment variable
+  if (setenv("HOME", "/tmp", 1) != 0) {
+    perror("Error setting HOME environment variable");
+    exit(1);
+  }
+
+  // Use getenv() to get the new value of the HOME environment variable
+  home = getenv("HOME");
+  printf("New HOME: %s\n", home);
+
+  // Use setenv() to change the value of the PATH environment variable
+  if (setenv("PATH", "/usr/local/bin:/bin", 1) != 0) {
+    perror("Error setting PATH environment variable");
+    exit(1);
+  }
+
+  // Use getenv() to get the new value of the PATH environment variable
+  path = getenv("PATH");
+  printf("New PATH: %s\n", path);
+
+  // Restore the original value of the PATH environment variable
+  if (setenv("PATH", path, 1) != 0) {
+    perror("Error restoring PATH environment variable");
+    exit(1);
+  }
+
+  return 0;
+}
+
+2. Setting the current directory to HOME:
+
+Use getenv() to get the user's home directory (HOME).
+Use chdir() to change the current directory to the home directory.
+
+// Use getenv() to get the user's home directory
+  char *home = getenv("HOME");
+  if (home == NULL) {
+    perror("Error getting HOME environment variable");
+    exit(1);
+  }
+ printf("Home directory: %s\n", home);
+
+// Use chdir() to change the current directory to the home directory
+  if (chdir(home) != 0) {
+    perror("Error changing directory to HOME");
+    exit(1);
+  }
+
+  feel free to input verification line so that you can conform the code works
+  to do use :
+  getcwd and perror
+
+3. Built-in commands:
+
+Implement two built-in commands: getpath and setpath.
+getpath: Prints the value of the system PATH.
+setpath: Sets the system PATH to the provided value.
+
+const char* getpath_cmd = "getpath";
+    const char* setpath_cmd = "setpath";
+
+    if (strcmp(getpath_cmd, argv[1]) == 0) {
+        // Implement the 'getpath' command
+        printf("%s\n", getenv("PATH"));
+    } else if (strcmp(setpath_cmd, argv[1]) == 0) {
+        // Implement the 'setpath' command
+        if (argc < 3) {
+            printf("Usage: setpath <new_path_value>\n");
+            return 1;
+        }
+
+        if (setenv("PATH", argv[2], 1) != 0) {
+            perror("setenv");
+            return 1;
+        }
+    } else {
+        // Invalid command
+        printf("Invalid command: '%s'\n", argv[1]);
+        return 1;
+    }
+
+
+Ensure appropriate error checking and informative error messages are printed if parameters are missing or incorrect.
+
+4. Separate functions for built-in commands:
+
+Implement separate functions for each built-in command.
+These functions should handle error checking and printing informative messages.
+
+
+5. Parsing user input:
+
+If you're generating a single string array containing all tokens of the user's input line, you can call the built-in command functions with the same single parameter, i.e., the array.
+
+6. Restoring the path:
+
+Restore the PATH environment parameter to its original value before exiting the shell.
+Ensure to print the path after it has been restored and before exiting.
+
+ // Save the original PATH value in a variable
+    char *original_path = getenv("PATH");
+
+    // Print the original PATH value
+    printf("Original PATH value: %s\n", original_path);
+
+    // Modify the PATH value here, if needed
+
+    // Restore the original PATH value before exiting
+    if (setenv("PATH", original_path, 1) != 0) {
+        perror("setenv");
+        return 1;
+    }
+
+    // Print the restored PATH value
+    printf("Restored PATH value: %s\n", getenv("PATH"));
+
+    return 0;
+}
+
+Cover all possible ways of exiting the shell -  exit, <ctrl-D>
+Ensure to thoroughly test your shell to confirm that it correctly handles environment variables, built-in commands, and the restoration of the PATH variable
