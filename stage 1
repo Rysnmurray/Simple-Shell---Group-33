@@ -18,6 +18,8 @@ display_prompt();
 fgets(input, 512 ,stdin);
 input[strcspn(input, "\n")] = 0;
 
+if
+
  if (strcmp(input, "exit") == 0) {
             break;
         }
