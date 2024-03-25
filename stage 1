@@ -1,6 +1,9 @@
 #include <stdio.h>
 #include <string.h>
 
+#define INPUTLENGTH 512
+
+
 void display_prompt(){
     printf("$>  ");
 };
@@ -8,7 +11,7 @@ void display_prompt(){
 
 int main(){
 
-char input[512];
+char input[INPUTLENGTH];
 
 while(1){
 display_prompt();
